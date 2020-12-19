@@ -6,4 +6,9 @@
     <color name="color_gray">#E0E0E0</color>
     <color name="color_progress_none">#DC1E08</color>
     <color name="color_progress_full">#35ba01</color>
+    <color name="teal">#48D4B9</color>
+    <color name="baby_blue">#5CDFEB</color>
+    <color name="seafoam_green">#54F6A9</color>
+    <color name="coral_blue_number_5">#5493F6</color>
+    <color name="cornflower_blue">#48A3D4</color>
 </resources>

@@ -47,8 +47,6 @@ class MemoryBoardAdapter(
     }
 
     override fun getItemCount() = boardSize.numCards
-
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
@@ -62,7 +60,7 @@ class MemoryBoardAdapter(
             {
                 if(memoryCard.imageUrl != null)
                 {
-                    Picasso.get().load(memoryCard.imageUrl).into(imageButton)
+                    Picasso.get().load(memoryCard.imageUrl).placeholder(R.drawable.ic_image).into(imageButton)
                 }
                 else{
                     imageButton.setImageResource(memoryCard.identifier)
@@ -79,10 +77,7 @@ class MemoryBoardAdapter(
             imageButton.setOnClickListener {
                 Log.i(TAG, "Clicked on position $position")
                         cardClickListener.onCardClicked(position)
-
                 }
-
-
         }
     }
 }

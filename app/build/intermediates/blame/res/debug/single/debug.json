@@ -8,6 +8,10 @@
         "source": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\src\\main\\res\\drawable\\ic_refresh.xml"
     },
     {
+        "merged": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_image.xml.flat",
+        "source": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\src\\main\\res\\drawable\\ic_image.xml"
+    },
+    {
         "merged": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\build\\intermediates\\res\\merged\\debug\\layout_memory_card.xml.flat",
         "source": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\src\\main\\res\\layout\\memory_card.xml"
     },
@@ -98,6 +102,10 @@
     {
         "merged": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_lightbulb.xml.flat",
         "source": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\src\\main\\res\\drawable\\ic_lightbulb.xml"
+    },
+    {
+        "merged": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_download_board.xml.flat",
+        "source": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\src\\main\\res\\layout\\dialog_download_board.xml"
     },
     {
         "merged": "C:\\Users\\mayaz\\Desktop\\MyMemory\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",

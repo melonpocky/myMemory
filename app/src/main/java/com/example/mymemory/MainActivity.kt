@@ -3,6 +3,7 @@ package com.example.mymemory
 import android.animation.ArgbEvaluator
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +11,12 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +25,11 @@ import com.example.mymemory.models.MemoryGame
 import com.example.mymemory.models.UserImageList
 import com.example.mymemory.utils.EXTRA_BOARD_SIZE
 import com.example.mymemory.utils.EXTRA_GAME_NAME
+import com.github.jinatonic.confetti.CommonConfetti
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private var customGameImages: List<String>? = null
     private lateinit var memoryGame: MemoryGame
-    private lateinit var clRoot: ConstraintLayout
+    private lateinit var clRoot: CoordinatorLayout
     private lateinit var adapter: MemoryBoardAdapter
     private lateinit var rvBoard: RecyclerView
     private lateinit var tvNumMoves: TextView
@@ -52,9 +57,7 @@ class MainActivity : AppCompatActivity() {
         clRoot = findViewById(R.id.clRoot)
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
-        
         setupBoard()
-
     }
 
     private fun setupBoard() {
@@ -92,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         //performance operation
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity() {
               {
                   setupBoard()
               }
+              return true
           }
 
 
@@ -127,20 +130,36 @@ class MainActivity : AppCompatActivity() {
               showCreationDialog()
               return true;
           }
+          R.id.mi_download->
+          {
+              showDownloadDialog()
+              return true;
+          }
+
       }
        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showDownloadDialog() {
+val boardDownloadView = LayoutInflater.from(this).inflate(R.layout.dialog_download_board, null)
+showAlertDialog("Fetch memory game", boardDownloadView, View.OnClickListener {
+    //grab the text of the game name that the user wants
+val etDownloadGame = boardDownloadView.findViewById<EditText>(R.id.etDownloadGame)
+val gameToDownload = etDownloadGame.text.toString().trim()
+    downloadGame(gameToDownload)
+})
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == CREATE_REQUEST_CODE && resultCode == Activity.RESULT_OK)
         {
-            val customGameName = data?.getStringExtra(EXTRA_GAME_NAME)
-            if(customGameName == null)
+            val gameName = data?.getStringExtra(EXTRA_GAME_NAME)
+            if(gameName == null)
             {
                 Log.e(TAG,"null custom game from createActivity")
             }
-            if (customGameName != null) {
-                downloadGame(customGameName)
+            if (gameName != null) {
+                downloadGame(gameName)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -158,8 +177,14 @@ class MainActivity : AppCompatActivity() {
             val numCards = userImageList.images.size*2
             boardSize = BoardSize.getByValue(numCards)
             customGameImages = userImageList.images
-            setupBoard()
+            for(imageUrl in userImageList.images)
+            {
+                Picasso.get().load(imageUrl).fetch()
+            }
+            Snackbar.make(clRoot, "You're now playing '$customGameName'!", Snackbar.LENGTH_LONG ).show()
             gameName = customGameName
+            setupBoard()
+
         }.addOnFailureListener{ exception ->
             Log.e(TAG, "Exception when retrieving game", exception)
         }
@@ -180,10 +205,7 @@ class MainActivity : AppCompatActivity() {
             //want to get signal back from child activity
             startActivityForResult(intent, CREATE_REQUEST_CODE)
         })
-
-
     }
-
     private fun showNewSizeDialog()
     {
         val  boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
@@ -222,6 +244,7 @@ class MainActivity : AppCompatActivity() {
         {
 
             Snackbar.make(clRoot, "You already won!", Snackbar.LENGTH_LONG).show()
+
             return
         }
         if(memoryGame.isCardFaceUp(position))
@@ -244,11 +267,10 @@ class MainActivity : AppCompatActivity() {
             if(memoryGame.haveWonGame())
             {
                 Snackbar.make(clRoot, "You Won!", Snackbar.LENGTH_LONG).show()
+                CommonConfetti.rainingConfetti(clRoot, intArrayOf(Color.BLUE, Color.CYAN, Color.MAGENTA)).oneShot()
             }
         }
         tvNumMoves.text = "Moves: ${memoryGame.getNumMoves()}"
         adapter.notifyDataSetChanged()
-
-
     }
 }

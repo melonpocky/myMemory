@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">My Memory</string>
-</resources>
+
+<!--if you want to make your app easily translatable,-->
+    <!--    add your strings here -->
+<!--if youre app is ready you can go to-->
+<!--    >>build-->
+<!--    >>generate signed bundle or apk-->
+<!--    >>android app bundle is mor recent so choose that-->
+<!--    >>creates optimized apk -->
+<!--    >>can result in a smaller download size-->
+<!--    -->
+<!--    >>then you store your stuff on keystore and pw-->
+
+
+    </resources>
